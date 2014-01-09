@@ -1,0 +1,12 @@
+
+These are the input parameters you provided, please check them carefully again:
+===============================================================================
+ic_filename       = /mnt/lustre/scratch/phys/ds381/output_00001/ramses2gadget_output_00001.
+ic_filetype       = 61
+outfile_prefix    = /mnt/lustre/scratch/phys/ds381/AHF_Output/job_output_00001/ahf_
+
+These are the input parameters you provided, please check them carefully again:
+===============================================================================
+ic_filename       = /mnt/lustre/scratch/phys/ds381/output_00002/ramses2gadget_output_00002.
+ic_filetype       = 61
+outfile_prefix    = /mnt/lustre/scratch/phys/ds381/AHF_Output/job_output_00002/ahf_
