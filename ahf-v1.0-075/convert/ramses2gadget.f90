@@ -99,7 +99,7 @@ program ramses2gadget
   real(kind=8), parameter :: Msun_in_cm = 1.9891d33
 
   ! variables needed for file management
-  character(len=128) :: dir_name, part_filename, amr_filename, hydro_filename, info_filename
+  character(len=128) :: dir_name, out_dir, part_filename, amr_filename, hydro_filename, info_filename
   character(len=128) :: output_filename
   character(len=5)   :: dir_number,suffix
   character(len=5)   :: output_file_suffix
@@ -175,6 +175,9 @@ program ramses2gadget
      if (gas.and.(.not.interpolate)) write (*,*) 'Running with hydro in one-particle-per-cell mode.'
      if (gas.and.interpolate) write (*,*) 'Running with hydro in interpolation mode.'
   endif
+
+  ! Hardcode output dir for now - David TODO Must change!
+  out_dir = '/mnt/lustre/scratch/phys/ds381/scratch'
 
   ! we need to open the info_...txt file in order to gather some important parameters.
 
@@ -325,7 +328,7 @@ program ramses2gadget
      info_filename =   trim(dir_name) // '/info_'  // trim(dir_number) // '.txt'
      amr_filename =    trim(dir_name) // '/amr_'   // trim(dir_number) // '.out' // trim(suffix)
      hydro_filename =  trim(dir_name) // '/hydro_' // trim(dir_number) // '.out' // trim(suffix)
-     output_filename = trim(dir_name) // '/ramses2gadget_output_00' // dir_number(3:5) // &
+     output_filename = trim(out_dir) // '/ramses2gadget_output_00' // dir_number(3:5) // &
           & '.' // trim(adjustl(output_file_suffix))
 
      ! check if all the input files are there
@@ -968,7 +971,7 @@ call MPI_ALLREDUCE(ngaspart_total,mpi_reduce_buffer, &
 
         ! open the written files again, but this time in direct access mode
         write(output_file_suffix,'(i5.1)') ifile - 1
-        output_filename = trim(dir_name) // '/ramses2gadget_output_00' // dir_number(3:5) // &
+        output_filename = trim(out_dir) // '/ramses2gadget_output_00' // dir_number(3:5) // &
              & '.' // trim(adjustl(output_file_suffix))
         output_file  = 10*ifile + 7 ! again a unique I/O unit id
         open(unit=output_file,file=output_filename,status='old',form='unformatted', &
@@ -988,7 +991,7 @@ call MPI_ALLREDUCE(ngaspart_total,mpi_reduce_buffer, &
            write( output_file,rec=31 )  ndmpart_total
            write( output_file,rec=34 )  nstarpart_total
         else
-	   write(*,*) 'ngaspart_dummy=',ngaspart_dummy, 'ndmpart_dummy=',ndmpart_dummy, & ! [ RF ]
+           write(*,*) 'ngaspart_dummy=',ngaspart_dummy, 'ndmpart_dummy=',ndmpart_dummy, & ! [ RF ]
                 &          ' nstarpart_dummy=',nstarpart_dummy                                 ! [ RF ]
            write(*,'(A,I4,A)') 'file#', ifile, &
                 & ': Error while writing GADGET header. The nall[6] entry will be wrong.'
